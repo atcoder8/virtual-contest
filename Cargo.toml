@@ -1,0 +1,5 @@
+[workspace]
+
+members = [
+    "daily-contest-67",
+]
