@@ -1,5 +1,7 @@
 [workspace]
 
+resolver = "2"
+
 members = [
     "daily-contest-67",
     "daily-contest-72",
