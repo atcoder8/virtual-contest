@@ -1,7 +1,8 @@
 [package]
-name = "daily-contest-85"
+name = "mayocorn-20230915"
 version = "0.1.0"
 edition = "2021"
+rust-version = "1.70.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -69,6 +70,7 @@ text_io = "0.1.12"
 rustc-hash = "1.1.0"
 smallvec = "1.11.0"
 
+
 [[bin]]
 name = "1"
 path = "src/bin/1.rs"
@@ -84,3 +86,19 @@ path = "src/bin/3.rs"
 [[bin]]
 name = "4"
 path = "src/bin/4.rs"
+
+[[bin]]
+name = "5"
+path = "src/bin/5.rs"
+
+[[bin]]
+name = "6"
+path = "src/bin/6.rs"
+
+[[bin]]
+name = "7"
+path = "src/bin/7.rs"
+
+[[bin]]
+name = "8"
+path = "src/bin/8.rs"

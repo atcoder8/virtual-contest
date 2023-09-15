@@ -1,5 +1,7 @@
 [workspace]
 
+resolver = "2"
+
 members = [
     "daily-contest-67",
     "daily-contest-72",
@@ -12,4 +14,5 @@ members = [
     "daily-contest-85",
     "daily-contest-88",
     "daily-contest-89",
+    "mayocorn-20230915",
 ]
