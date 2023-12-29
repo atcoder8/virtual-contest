@@ -25,4 +25,5 @@ members = [
     "mayocorn-20231130",
     "mayocorn-20231203",
     "mayocorn-20231226",
+    "mayocorn-20231229",
 ]
