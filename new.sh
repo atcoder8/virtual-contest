@@ -94,7 +94,7 @@ cargo new --bin $CONTEST_NAME
 rm $CONTEST_NAME/src/main.rs
 
 mkdir $CONTEST_NAME/src/bin
-for problem_idx in $(seq 1 $PROBLEM_NUM); do
+for problem_idx in $(seq --equal-width 1 $PROBLEM_NUM); do
     cat <<EOF >$CONTEST_NAME/src/bin/$problem_idx.rs
 $TEMPLATE
 EOF
@@ -103,7 +103,7 @@ done
 cat <<EOF >>$CONTEST_NAME/Cargo.toml
 $DEPENDENCIES
 EOF
-for problem_idx in $(seq 1 $PROBLEM_NUM); do
+for problem_idx in $(seq --equal-width 1 $PROBLEM_NUM); do
     cat <<EOF >>$CONTEST_NAME/Cargo.toml
 
 [[bin]]
