@@ -1,3 +1,4 @@
+use itertools::enumerate;
 use proconio::{input, marker::Chars};
 
 const ACGT: &str = "ACGT";
@@ -7,16 +8,13 @@ fn main() {
         s: Chars,
     }
 
-    let is_ok = |seq: &[char]| seq.iter().all(|&c| ACGT.contains(c));
-
-    let n = s.len();
-
     let mut ans = 0;
-    for left in 0..n {
-        for right in left + 1..=n {
-            if is_ok(&s[left..right]) {
-                ans = ans.max(right - left);
-            }
+    let mut left = 0;
+    for (right, c) in enumerate(s) {
+        if ACGT.contains(c) {
+            ans = ans.max(right - left + 1);
+        } else {
+            left = right + 1;
         }
     }
 
