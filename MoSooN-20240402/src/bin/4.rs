@@ -1,6 +1,7 @@
-// unfinished
-
-use std::{cmp::Reverse, collections::BTreeSet};
+use std::{
+    cmp::Reverse,
+    collections::{BTreeSet, BinaryHeap},
+};
 
 use itertools::{enumerate, Itertools};
 use proconio::{input, marker::Usize1};
@@ -19,43 +20,22 @@ fn solve() -> usize {
 
     let bad: BTreeSet<(usize, usize)> = cd.into_iter().collect();
 
-    let ia = enumerate(aa)
-        .sorted_unstable_by_key(|v| Reverse(v.1))
-        .collect_vec();
-    let ib = enumerate(bb)
+    let jb = enumerate(bb)
         .sorted_unstable_by_key(|v| Reverse(v.1))
         .collect_vec();
 
-    let mut start_pos = 0;
-    let mut progresses = vec![0; n];
+    let mut heap: BinaryHeap<(usize, usize, usize)> =
+        enumerate(&aa).map(|(i, &a)| (a + jb[0].1, i, 0)).collect();
 
     loop {
-        for pos in start_pos..n {
-            let (a_idx, a) = ia[pos];
+        let (score, i, b_pos) = heap.pop().unwrap();
 
-            if pos < n - 1
-                && a + ib[progresses[pos]].1 < ia[start_pos].1 + ib[progresses[start_pos]].1
-            {
-                break;
-            }
+        if !bad.contains(&(i, jb[b_pos].0)) {
+            return score;
+        }
 
-            while progresses[pos] < m {
-                let (b_idx, b) = ib[progresses[pos]];
-                let score = a + b;
-                if pos < n - 1 && score < ia[pos + 1].1 + ib[progresses[pos + 1]].1 {
-                    break;
-                }
-
-                if !bad.contains(&(a_idx, b_idx)) {
-                    return score;
-                }
-
-                progresses[pos] += 1;
-            }
-
-            if progresses[pos] == m {
-                start_pos += 1;
-            }
+        if b_pos < m - 1 {
+            heap.push((aa[i] + jb[b_pos + 1].1, i, b_pos + 1));
         }
     }
 }
