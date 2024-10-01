@@ -1,10 +1,5 @@
-// unfinished
-
-use std::ops::Range;
-
-use im_rc::HashMap;
-use modint2::Modint998244353;
-use ndarray::Array2;
+use modint2::{Factorial, Modint998244353};
+use ndarray::prelude::*;
 use proconio::{input, marker::Usize1};
 
 type Mint = Modint998244353;
@@ -23,41 +18,24 @@ fn main() {
         adjacent_matrix[(b, a)] = true;
     }
 
-    let ans = recursion(&adjacent_matrix, 0..n2, &mut HashMap::new());
-    println!("{}", ans);
-}
+    let factorial = Factorial::<Mint>::new(n2);
 
-fn recursion(
-    adjacent_matrix: &Array2<bool>,
-    range: Range<usize>,
-    memo: &mut HashMap<Range<usize>, Mint>,
-) -> Mint {
-    if range.len() == 0 {
-        return Mint::new(1);
-    }
-
-    if let Some(&num_combs) = memo.get(&range) {
-        return num_combs;
-    }
-
-    let mut num_combs = (range.start + 2..range.end)
-        .step_by(2)
-        .filter_map(|mid| {
-            if adjacent_matrix[(range.start, mid)] && adjacent_matrix[(mid, range.end - 1)] {
-                let left_num_combs = recursion(adjacent_matrix, range.start..mid, memo);
-                let right_num_combs = recursion(adjacent_matrix, mid..range.end, memo);
-                Some(left_num_combs * right_num_combs)
-            } else {
-                None
+    let mut dp = Array2::from_elem((n2 + 1, n + 1), Mint::new(0));
+    dp.slice_mut(s![.., 0]).fill(Mint::new(1));
+    for left in (0..n2).rev() {
+        for half_len in 1..=(n2 - left) / 2 {
+            for left_half_len in 1..=half_len {
+                if adjacent_matrix[(left, left + 2 * left_half_len - 1)] {
+                    let num_combs = factorial.combinations(half_len, left_half_len)
+                        * dp[(left + 1, left_half_len - 1)]
+                        * dp[(left + 2 * left_half_len, half_len - left_half_len)];
+                    dp[(left, half_len)] += num_combs;
+                }
             }
-        })
-        .sum::<Mint>();
-    if adjacent_matrix[(range.start, range.end - 1)] {
-        num_combs += recursion(adjacent_matrix, range.start + 1..range.end - 1, memo);
+        }
     }
-    memo.insert(range, num_combs);
 
-    num_combs
+    println!("{}", dp[(0, n)]);
 }
 
 pub mod modint2 {
